@@ -1,0 +1,54 @@
+# Applies supabase/migrations/*.sql to the production database whenever a
+# migration lands on main. Schema changes are PRs, not SQL-editor pastes.
+#
+# Required repository secrets (Settings -> Secrets and variables -> Actions):
+#   SUPABASE_ACCESS_TOKEN  - personal access token from supabase.com/dashboard/account/tokens
+#   SUPABASE_DB_PASSWORD   - database password (Project Settings -> Database)
+#
+# One-time baseline: migration 0001 was applied manually via the SQL editor,
+# so its history row is missing. Run this workflow once by hand with
+# repair_version = 0001 before relying on automatic pushes.
+name: Deploy Migrations
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - supabase/migrations/**
+  workflow_dispatch:
+    inputs:
+      repair_version:
+        description: Mark a version as already applied (one-time baseline, e.g. 0001)
+        required: false
+        default: ""
+
+concurrency:
+  group: deploy-migrations
+  cancel-in-progress: false
+
+jobs:
+  push_migrations:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      SUPABASE_PROJECT_REF: lfaabzihcpdwosjidrta
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Link project
+        run: supabase link --project-ref "$SUPABASE_PROJECT_REF"
+
+      - name: Repair migration history (baseline only)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.repair_version != '' }}
+        env:
+          REPAIR_VERSION: ${{ inputs.repair_version }}
+        run: supabase migration repair --status applied "$REPAIR_VERSION"
+
+      - name: Push migrations
+        run: supabase db push

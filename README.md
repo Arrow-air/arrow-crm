@@ -30,6 +30,12 @@ Never use the `service_role` key in this app.
 
 1. Create the project, then run `supabase/migrations/0001_init.sql` in the
    SQL editor (or `supabase db push` with the CLI).
+
+   After the first manual setup, schema changes are automated: add a new
+   `supabase/migrations/<version>_<name>.sql` file in a PR, and the
+   Deploy Migrations workflow runs `supabase db push` on merge to `main`
+   (see the header of `.github/workflows/deploy_migrations.yml` for the
+   required secrets and one-time baseline step).
 2. Enable the GitHub provider: Authentication → Providers → GitHub, using
    the client ID/secret from a GitHub OAuth app (create it under the
    Arrow-air org: Settings → Developer settings → OAuth Apps). Set the
