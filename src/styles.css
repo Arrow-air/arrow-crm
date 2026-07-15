@@ -1,0 +1,128 @@
+:root {
+  color-scheme: light dark;
+  font-family: system-ui, sans-serif;
+  --accent: #0943bf;
+}
+
+body {
+  margin: 0;
+}
+
+.center {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  gap: 1rem;
+  text-align: center;
+}
+
+.layout {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+main {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #8884;
+}
+
+tbody tr {
+  cursor: pointer;
+}
+
+tbody tr:hover,
+tr.selected {
+  background: #0943bf18;
+}
+
+.status {
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.85em;
+  border: 1px solid #8886;
+}
+
+.status-new {
+  background: #e5484d33;
+}
+
+.status-faded {
+  background: #f5a52333;
+}
+
+.status-active {
+  background: #30a46c33;
+}
+
+.detail {
+  min-width: 280px;
+  max-width: 340px;
+  border: 1px solid #8884;
+  border-radius: 8px;
+  padding: 1rem;
+  position: relative;
+}
+
+.detail .close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+
+.status-btn {
+  margin-right: 0.25rem;
+}
+
+.active-btn {
+  outline: 2px solid var(--accent);
+}
+
+.touchpoint-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.touchpoint-form input {
+  flex: 1;
+}
+
+.detail ul {
+  padding-left: 1rem;
+}
+
+.detail li {
+  margin-bottom: 0.5rem;
+}
+
+.error {
+  color: #e5484d;
+}
+
+button {
+  cursor: pointer;
+}
+
+.add-form input {
+  margin-right: 0.25rem;
+}
