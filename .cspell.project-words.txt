@@ -1,4 +1,6 @@
+jsonc
 plpgsql
 supabase
 touchpoint
 touchpoints
+wrangler
