@@ -28,12 +28,12 @@ export default function App() {
         <button
           onClick={() =>
             supabase.auth.signInWithOAuth({
-              provider: "discord",
+              provider: "github",
               options: { redirectTo: window.location.origin },
             })
           }
         >
-          Sign in with Discord
+          Sign in with GitHub
         </button>
       </div>
     );

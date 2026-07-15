@@ -9,9 +9,11 @@ Level Security and never enters this repository.
 ## Stack
 
 - **Frontend:** Vite + React (static SPA), deployed on Cloudflare Pages
-- **Backend:** Supabase — Postgres, Row Level Security, Discord OAuth
-- **Access (v1):** Discord sign-in + an `allowlist` table of Discord IDs.
+- **Backend:** Supabase — Postgres, Row Level Security, GitHub OAuth
+- **Access (v1):** GitHub sign-in + an `allowlist` table of GitHub user IDs.
   Hats/role-based access can replace the allowlist later without app changes.
+  Note: login identity is GitHub; member *data* stays keyed by Discord ID —
+  the people being tracked are Discord community members.
 
 ## Local development
 
@@ -28,12 +30,14 @@ Never use the `service_role` key in this app.
 
 1. Create the project, then run `supabase/migrations/0001_init.sql` in the
    SQL editor (or `supabase db push` with the CLI).
-2. Enable the Discord provider: Authentication → Providers → Discord, using
-   the client ID/secret from the "Arrow CRM" app in the Discord developer
-   portal. Whitelist the callback URL Supabase shows you.
-3. Add users: insert their Discord IDs into `allowlist`
-   (Table editor → allowlist). Signing in without an allowlist entry
-   authenticates fine but RLS denies all data access.
+2. Enable the GitHub provider: Authentication → Providers → GitHub, using
+   the client ID/secret from a GitHub OAuth app (create it under the
+   Arrow-air org: Settings → Developer settings → OAuth Apps). Set the
+   authorization callback URL to the one Supabase shows you.
+3. Add users: insert their numeric GitHub user IDs into `allowlist`
+   (Table editor → allowlist). Find an ID at
+   `https://api.github.com/users/<username>`. Signing in without an
+   allowlist entry authenticates fine but RLS denies all data access.
 
 ## Deploy (Cloudflare Pages)
 
@@ -50,7 +54,7 @@ Every push to `main` deploys; every PR gets a preview URL.
 - `members` — discord_id, name, joined_at, status
   (`new → met → introduced → active`, or `faded`), met_by, projects, notes
 - `touchpoints` — who talked to a member, when, about what
-- `allowlist` — Discord IDs allowed to use the CRM
+- `allowlist` — GitHub user IDs allowed to use the CRM
 
 ## Infra context
 
