@@ -1,4 +1,5 @@
 jsonc
+lfaabzihcpdwosjidrta
 plpgsql
 supabase
 touchpoint
