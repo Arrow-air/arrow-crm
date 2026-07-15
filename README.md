@@ -39,15 +39,21 @@ Never use the `service_role` key in this app.
    `https://api.github.com/users/<username>`. Signing in without an
    allowlist entry authenticates fine but RLS denies all data access.
 
-## Deploy (Cloudflare Pages)
+## Deploy (Cloudflare Workers, static assets)
 
-Connect the repo in the Cloudflare dashboard:
+Connect the repo in the Cloudflare dashboard (Workers & Pages → import from
+git). `wrangler.jsonc` tells the deploy step to publish `dist/` as a static
+SPA — no server code runs on Cloudflare.
 
 - Build command: `npm run build`
-- Output directory: `dist`
-- Environment variables: `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`
+- Deploy command: `npx wrangler deploy` (the default)
+- Build variables (Settings → Build → Variables): `VITE_SUPABASE_URL`,
+  `VITE_SUPABASE_ANON_KEY` — these are baked in at build time, so redeploy
+  after changing them.
 
-Every push to `main` deploys; every PR gets a preview URL.
+Every push to `main` deploys; every PR gets a preview URL. After the first
+deploy, set the Supabase Auth Site URL / redirect URLs to the deployed URL,
+or OAuth logins will bounce to localhost.
 
 ## Schema (v1)
 
